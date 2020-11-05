@@ -1,0 +1,23 @@
+<html>
+<body>
+
+  <nuxeo-connection url="/nuxeo"></nuxeo-connection>
+
+  <!-- fetch the document with the preview -->
+  <nuxeo-document-suggestion id="suggestion" placeholder="Select a document" enrichers="preview"></nuxeo-document-suggestion>
+
+  <nuxeo-document-preview id="view"></nuxeo-document-preview>
+
+  <script type="module">
+    // rely on bare imports
+    import '@nuxeo/nuxeo-elements/nuxeo-connection';
+    import '@nuxeo/nuxeo-ui-elements/nuxeo-document-preview';
+    import '@nuxeo/nuxeo-ui-elements/widgets/nuxeo-document-suggestion';
+
+    // update the preview document when selected document changes
+    suggestion.addEventListener('selected-item-changed', ({ detail: { value: document } }) => {
+      view.document = document;
+    });
+  </script>
+</body>
+</html>

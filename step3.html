@@ -1,0 +1,47 @@
+<html>
+  <head>
+    <style>
+      /* set primary color */
+      html {
+        --nuxeo-primary-color: #aaa;
+      }
+    </style>
+  </head>
+<body>
+
+  <nuxeo-connection url="/nuxeo"></nuxeo-connection>
+
+  <!-- fetch the document with the preview -->
+  <nuxeo-document-suggestion id="suggestion" placeholder="Select a document" enrichers="preview"></nuxeo-document-suggestion>
+
+  <nuxeo-document-preview id="view"></nuxeo-document-preview>
+
+  <script type="module">
+    // rely on bare imports
+    import '@nuxeo/nuxeo-elements/nuxeo-connection';
+    import '@nuxeo/nuxeo-ui-elements/nuxeo-document-preview';
+    import '@nuxeo/nuxeo-ui-elements/widgets/nuxeo-document-suggestion';
+    
+    // set reverse router and i18n
+    import { setI18n } from '@nuxeo/nuxeo-ui-elements/nuxeo-i18n-behavior';
+    import { setRouter } from '@nuxeo/nuxeo-ui-elements/nuxeo-routing-behavior';
+
+    // import en from '@nuxeo/nuxeo-ui-elements/i18n/messages.json'
+    // setI18n({ en });
+    setI18n({
+      'en': {
+        'selectivity.minChars': 'Please enter {0} or more characters',
+      },
+    });
+
+    setRouter({
+      browse: () => '#'
+    });
+
+    // update the preview document when selected document changes
+    suggestion.addEventListener('selected-item-changed', ({ detail: { value: document } }) => {
+      view.document = document;
+    });
+  </script>
+</body>
+</html>

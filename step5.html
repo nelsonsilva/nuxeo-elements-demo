@@ -1,0 +1,88 @@
+<html>
+  <head>
+    <style>
+      /* set primary color */
+      html {
+        --nuxeo-primary-color: #ccc;
+      }
+
+      /* define a grid */
+      body {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      #suggestion {
+        grid-column: 1;
+      }
+
+    </style>
+  </head>
+<body>
+  <dom-module id="nuxeo-styles">
+    <template>
+      <style>
+        label {
+          font-weight: bold;
+        }
+
+        *[role='widget'] {
+          margin-bottom: 16px;
+        }
+      </style>
+    </template>
+  </dom-module>
+
+  <nuxeo-connection url="/nuxeo"></nuxeo-connection>
+
+  <!-- dom-bind to have Polymer manage the template -->
+  <dom-bind id="app">
+    <template>
+      <!-- fetch the document with the preview -->
+      <nuxeo-document-suggestion id="suggestion" placeholder="Select a document" enrichers="preview" selected-item="{{document}}"></nuxeo-document-suggestion>
+
+      <!-- Download document action button -->
+      <nuxeo-download-button document="[[document]]" hidden$=[[!document]]></nuxeo-download-button>
+
+      <nuxeo-document-preview id="view" document="[[document]]"></nuxeo-document-preview>
+
+      <!-- use the metadata layout for the current document -->
+      <nuxeo-document-layout id="metadata" href-base="/nuxeo/ui/document" layout="metadata" document="[[document]]"></nuxeo-document-layout>
+    </template>
+  </dom-bind>
+
+  <script type="module">
+    // rely on bare imports
+    import '@nuxeo/nuxeo-elements/nuxeo-connection';
+    import '@nuxeo/nuxeo-ui-elements/nuxeo-document-layout';
+    import '@nuxeo/nuxeo-ui-elements/nuxeo-document-preview';
+    import '@nuxeo/nuxeo-ui-elements/actions/nuxeo-download-button'
+    import '@nuxeo/nuxeo-ui-elements/widgets/nuxeo-document-suggestion';
+
+    // set reverse router and i18n
+    import { setI18n } from '@nuxeo/nuxeo-ui-elements/nuxeo-i18n-behavior';
+    import { setRouter } from '@nuxeo/nuxeo-ui-elements/nuxeo-routing-behavior';
+
+    // expose globals for compatibility
+    import './legacy';
+
+    setI18n({
+      'en': {
+        'label.dublincore.title': 'Title',
+        'label.dublincore.description': 'Description',
+        'label.dublincore.nature': 'Nature',
+        'label.dublincore.coverage': 'Coverage',
+        'selectivity.minChars': 'Please enter {0} or more characters'
+      }
+    });
+
+    setRouter({
+      browse: () => '#'
+    });
+  </script>
+
+  <!-- load the HTML Imports polyfill -->
+  <script src="node_modules/@webcomponents/html-imports/html-imports.min.js"></script>
+</body>
+</html>
